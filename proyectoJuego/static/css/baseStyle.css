@@ -1,0 +1,100 @@
+
+body{
+    margin: auto;
+    background-color: #bce0ad;
+}
+/*Estilos del contenedor principal*/
+.principal{
+    margin:70px auto auto auto;
+    width: 80%;
+}
+
+/*HEADER*/
+.principal header{
+    width: 100%;
+    background-color: #BDE46B;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border: 7px solid black;
+}
+
+/*Estilos del logo*/
+.principal .logo{
+    display: flex;
+    align-items: end;
+    margin: 40px 40px 80px;
+}
+
+.principal .logo img{
+    width: 150px;
+}
+.principal .logo p{
+    font-family: "Sonsie One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48px;
+    color: #9DF06A;
+    
+}
+
+/*Estilos del navegador*/
+.principal header nav{
+    margin-bottom: 90px;
+    margin-right: 80px;
+}
+.principal header nav a{
+    font-family: "Cherry Bomb One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    text-decoration: none;
+    color: black;
+    margin-right: 15px;
+}
+
+/*MAIN*/
+.principal .main{
+    background-color: #86D81F;
+}
+
+/*FOOTER*/
+footer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #BDE46B;
+    border: 7px solid black;
+}
+
+footer .logo{
+    display: flex;
+    align-items: end;
+    margin-right: 80px;
+    margin: 40px 40px 80px;
+}
+
+footer .logo img{
+    width: 150px;
+}
+footer .logo p{
+    font-family: "Sonsie One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48px;
+    color: #9DF06A;
+    
+}
+footer nav{
+    margin-top: 80px;
+}
+
+footer nav a{
+    font-family: "Cherry Bomb One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    text-decoration: none;
+    color: black;
+    margin-left: 80px;
+}

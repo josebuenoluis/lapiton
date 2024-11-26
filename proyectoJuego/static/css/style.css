@@ -1,0 +1,168 @@
+body{
+    margin: auto;
+    background-color: #bce0ad;
+}
+
+/*Estilos del contenedor principal*/
+.principal{
+    margin:70px auto auto auto;
+    width: 80%;
+}
+
+/*HEADER*/
+.principal header{
+    width: 100%;    
+    background-color: #BDE46B;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border: 7px solid black;
+}
+
+/*Estilos del logo*/
+.principal .logo{
+    display: flex;
+    align-items: end;
+    margin: 40px 40px 80px;
+}
+
+.principal .logo img{
+    width: 100px;
+}
+.principal .logo p{
+    font-family: "Sonsie One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48px;
+    color: #5A8A3D;
+    
+}
+
+/*Estilos del navegador*/
+.principal header nav{
+    margin-bottom: 90px;
+    margin-right: 80px;
+}
+.principal header nav a{
+    font-family: "Cherry Bomb One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    text-decoration: none;
+    color: black;
+    margin-right: 15px;
+}
+
+/*FOOTER*/
+footer{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #BDE46B;
+    border: 7px solid black;
+}
+
+footer .logo{
+    display: flex;
+    align-items: end;
+    margin-right: 80px;
+    margin: 40px 40px 80px;
+}
+
+footer .logo img{
+    width: 100px;
+}
+footer .logo p{
+    font-family: "Sonsie One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 48px;
+    color: #5A8A3D;
+    
+}
+footer nav{
+    margin-top: 80px;
+}
+
+footer nav a{
+    font-family: "Cherry Bomb One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 26px;
+    text-decoration: none;
+    color: black;
+    margin-left: 80px;
+}
+
+.juego{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+.puntaje {
+    display: flex;
+    font-size: 24px;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #324cdd;
+    font-weight: bold;
+    grid-column-start: 2;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.puntaje #tituloPuntos {
+    margin-right: 8px;
+}
+
+.puntaje #puntos {
+    margin-right: 50px;
+}
+
+.puntaje #tituloDificulta {
+    margin-right: 8px;
+}
+
+.campo{
+    background-image:url("../img/fondoCampoTiburon.png");
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    grid-template-rows: repeat(10,1fr);
+    margin: auto;
+    grid-column-start: 2;
+    width: 1000px;
+    height: 1000px;
+    margin-bottom: 100px;
+    margin-top: 60px;
+}
+
+/* Estilos del juego */
+.juego{
+    width: 100%;
+    background-color: gray;
+}
+
+.juego table{
+    background-color: white;
+    width: 70%;
+    height: 80%;
+    border: 1px solid black;
+    grid-row-start: 2;
+    margin: auto;
+    text-align: center;
+}
+.juego table tr th{
+    font-size: 20px;
+}
+
+.juego table tr td{
+    font-size: 18px;
+    color: black;
+}
+
+.juego table tr th,td{
+    border: 1px solid black;
+}
+

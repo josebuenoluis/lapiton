@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block estilos %}"static/css/style.css"{% endblock %}
+{% block content%}
+<div class="juego">
+    <table>
+        <tr>
+            <th colspan="3">TOP 10</th>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <th>Puntos</th>
+            <th>Dificultad</th>
+        </tr>
+        {% for juego in juegos %}
+            <tr>
+                <td>{{jugador.nombre}}</td>
+                <td>{{jugador.puntos}}</td>
+                <td>{{jugador.dificultad}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="puntaje">
+        <p id="tituloPuntos">PUNTOS:</p>
+        <p id="puntos"></p>
+        <p id="tituloDificultad">DIFICULTAD:</p>
+        <p id="dificultad"></p>
+    </div>
+    <div class="campo">
+    </div>
+</div>
+<script src="static/js/main.js"></script>
+{% endblock %}

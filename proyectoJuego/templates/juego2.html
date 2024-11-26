@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jose Francisco Bueno Luis">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego 2</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body {
+            background-color: darkgrey;
+        }
+        .juego{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        .puntaje {
+            display: flex;
+            font-size: 24px;
+            align-items: center;
+            align-content: center;
+            align-self: center;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #324cdd;
+            font-weight: bold;
+            grid-column-start: 2;
+            margin: auto;
+        }
+        .puntaje #tituloPuntos {
+            margin-right: 8px;
+        }
+        
+        .puntaje #puntos {
+            margin-right: 50px;
+        }
+        
+        .puntaje #tituloDificulta {
+            margin-right: 8px;
+        }
+        .campo{
+            background-color: blue;
+            display: grid;
+            grid-template-columns: repeat(10,1fr);
+            grid-template-rows: repeat(10,1fr);
+            margin: auto;
+            grid-column-start: 2;
+            width: 500px;
+            height: 500px;
+        }
+        .ranking{
+            background-color: gray;
+            grid-row-start: 2;
+            width: 70%;
+            height: 80%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            border: 1px solid black;
+        }
+        .ranking .encabezado{
+            background-color: chocolate;
+            height: 15%;
+            grid-column-start: 1;
+            grid-column-end: -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            border: 1px solid black;
+        }
+        .ranking .encabezado p:nth-child(1){
+            margin: auto;
+            grid-row-start: 1;
+            grid-column-start: 2;
+        }
+        .ranking .encabezado p:nth-child(2){
+            margin: auto;
+            grid-row-start: 2;
+            grid-column-start: 1;
+        }
+        .ranking .encabezado p:nth-child(3){
+            margin: auto;
+            grid-row-start: 2;
+            grid-column-start: 2;
+        }
+        .ranking .encabezado p:nth-child(4){
+            margin: auto;
+            grid-row-start: 2;
+            grid-column-start: 3;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="juego">
+        <div class="ranking">
+            <div class="encabezado">
+                <p>TOP 10</p>
+                <p>Nombre</p>
+                <p>Puntaje</p>
+                <p>Dificultad</p>
+            </div>
+        </div>
+        <div class="puntaje">
+            <p id="tituloPuntos">PUNTOS:</p>
+            <p id="puntos"></p>
+            <p id="tituloDificultad">DIFICULTAD:</p>
+            <p id="dificultad"></p>
+        </div>
+        <div class="campo">
+        </div>
+    </div>
+    <script>
+        let velocidadEnemigo = 1500;
+let puntaje = 0;
+let bola = document.querySelector(".bola");
+let campo = document.querySelector(".campo");
+let puntos = document.querySelector("#puntos");
+let dificultadText = document.querySelector("#dificultad");
+puntos.textContent = puntaje;
+let posicionX = 1;
+let posicionY = 1;
+let direccion = 1;
+let rightPressed = false;
+let leftPressed = false;
+let downpressed = false;
+let uppressed = false;
+let posicionEnemigoX = 0;
+let posicionEnemigoY = 0;
+let listaLadrillos = [];
+let interval = 0;
+let dificultad = 0;
+let nivel = document.querySelector("#dificultad");
+let juegoIniciado = false;
+nivel.textContent = dificultad;
+
+// Definimos los cursores del usuario
+document.addEventListener("keydown", keyDownHandler, false); // Le decimos al DOM que escuche cuando el usuario pulse la tecla derecha
+document.addEventListener("keyup", keyUpHandler, false); // Le decimos al DOM que escuche cuando el usuario pulse la tecla izquierda
+
+// Creamos una funcion que se activara cuando el usuario pulse la tecla especificada en el addEventListener
+function keyDownHandler(e) {
+  if (e.keyCode == 39) {
+    //console.log("derecha") // He añadido esta linea para comprobar en la consola que se activa la funcion
+    // al pulsar la tecla derecha
+    rightPressed = true;
+    moverDerecha();
+  } else if (e.keyCode == 40) {
+    moverAbajo();
+
+    downpressed = true;
+  } else if (e.keyCode == 38) {
+    uppressed = true;
+    moverArriba();
+  } else if (e.keyCode == 37) {
+    //console.log("izquierda") // He añadido esta linea para comprobar que se esta ejecutando la funcion con la tecla
+    // izquierda
+    leftPressed = true;
+    moverIzquierda();
+  } else if (e.keyCode == 32) {
+    console.log("inicio");
+    iniciarJuego();
+  }
+}
+function keyUpHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = false;
+    detectarColision();
+  } else if (e.keyCode == 40) {
+    downpressed = false;
+    detectarColision();
+  } else if (e.keyCode == 38) {
+    uppressed = false;
+    detectarColision();
+  } else if (e.keyCode == 37) {
+    leftPressed = false;
+    detectarColision();
+  }
+}
+
+// Estado inicial
+let estadoInicial = function () {
+  let mensaje = document.createElement("div");
+  mensaje.className = "mensaje";
+  mensaje.classList.add("mensaje");
+  campo.appendChild(mensaje);
+  mensaje.style.width = "250px";
+  mensaje.style.height = "100px";
+  mensaje.style.gridColumnStart = 5;
+  mensaje.style.marginTop = "200px";
+  mensaje.style.background = "white";
+  let texto = document.createElement("p");
+  texto.style.font = "20px";
+  texto.style.textAlign = "center";
+  texto.style.verticalAlign = "center";
+  texto.style.fontWeight = "bold";
+  texto.textContent = "PRESIONE SPACE BAR PARA COMENZAR";
+  texto.style.fontFamily = "Arial, Helvetica, sans-serif";
+  mensaje.appendChild(texto);
+};
+estadoInicial();
+
+//Ventana para volver a empezar y guardar progreso
+function ventanaRegresar() {
+  let ventana = document.createElement("div");
+  ventana.className = "ventana";
+  ventana.classList.add("ventana");
+  ventana.style.display = "flex";
+  ventana.style.flexDirection = "column";
+  ventana.style.justifyContent = "space-between";
+  campo.appendChild(ventana);
+  ventana.style.width = "200px";
+  ventana.style.height = "350px";
+  ventana.style.gridColumnStart = 5;
+  ventana.style.background = "white";
+  let nombreUsuario = document.createElement("input");
+  nombreUsuario.type = "text";
+  nombreUsuario.style.width = "100px";
+  let guardar = document.createElement("input");
+  guardar.type = "button";
+  guardar.style.width = "80px";
+  guardar.value = "Guardar";
+  //guardar.click(guardarDatos);
+  let volver = document.createElement("input");
+  volver.type = "button";
+  volver.style.width = "80px";
+  volver.value = "Volver a Jugar";
+  volver.addEventListener("click", regresar);
+  ventana.appendChild(nombreUsuario);
+  ventana.appendChild(guardar);
+  ventana.appendChild(volver);
+}
+function regresar() {
+  puntaje = 0;
+  dificultad = 0;
+  velocidadEnemigo = 1500;
+  nivel.textContent = dificultad;
+  puntos.textContent = puntaje;
+  let ventana = document.querySelector(".ventana");
+  juegoIniciado = false;
+  ventana.remove(campo);
+  let ladrillo = document.querySelector(".ladrillo");
+  let enemigo = document.querySelector(".enemigo");
+  estadoInicial();
+  ladrillo.remove(campo);
+  enemigo.remove(campo);
+}
+// Funcion inicial
+function iniciarJuego() {
+  if (juegoIniciado == false) {
+    crearBola();
+    crearLadrillo();
+    crearEnemigo();
+    let mensaje = document.querySelector(".mensaje");
+    mensaje.remove(campo);
+    intervalo = setInterval(moverEnemigo, velocidadEnemigo);
+    juegoIniciado = true;
+  } else {
+    console.log("El juego ya ha sido iniciado");
+  }
+}
+
+function crearBola() {
+  bola = document.createElement("div");
+  bola.className = "bola";
+  bola.classList.add("bola");
+  campo.appendChild(bola);
+  bola.style.gridColumnStart = posicionX;
+  bola.style.gridRowStart = posicionY;
+  bola.style.borderRadius = "50%";
+  bola.style.width = "50px";
+  bola.style.height = "50px";
+  bola.style.background = "red";
+}
+
+// Definimos la funcion para mover la bola
+function moverDerecha() {
+  if (posicionX < 10) {
+    posicionX += 1;
+    bola.style.gridColumnStart = posicionX;
+    detectarColision();
+  } else {
+    bola.remove(campo);
+  }
+}
+
+function moverIzquierda() {
+  if (posicionX - 1 > 0 || posicionX != 0) {
+    posicionX -= 1;
+    bola.style.gridColumnStart = posicionX;
+    detectarColision();
+  } else {
+    bola.remove(campo);
+  }
+}
+function moverArriba() {
+  if (posicionY - 1 > 0 || posicionY != 0) {
+    posicionY -= 1;
+    bola.style.gridRowStart = posicionY;
+    detectarColision();
+  } else {
+    bola.remove(campo);
+  }
+}
+
+function moverAbajo() {
+  if (posicionY < 10) {
+    posicionY += 1;
+    bola.style.gridRowStart = posicionY;
+    detectarColision();
+  } else {
+    bola.remove(campo);
+  }
+}
+
+// Crear ladrillo
+let crearLadrillo = function () {
+  let poscicionLadrillo = Math.floor(Math.random() * 10) + 1;
+  let ladrillo = document.createElement("div");
+  ladrillo.className = "ladrillo";
+  ladrillo.style.width = "50px";
+  ladrillo.style.height = "50px";
+  ladrillo.style.borderRadius = "50%";
+  ladrillo.style.gridColumnStart = poscicionLadrillo;
+  ladrillo.style.gridRowStart = poscicionLadrillo;
+  ladrillo.style.background = "yellow";
+  campo.appendChild(ladrillo);
+};
+// crearLadrillo();
+
+// Funcion para detectar colision
+function detectarColision() {
+  let bola = document.querySelector(".bola");
+  let ladrillo = document.querySelector(".ladrillo");
+  if (
+    bola.style.gridColumnStart == ladrillo.style.gridColumnStart &&
+    bola.style.gridRowStart == ladrillo.style.gridRowStart
+  ) {
+    puntaje += 1;
+    console.log("DETECTADA");
+    if (puntaje % 2 == 0 && dificultad != 13) {
+      dificultad += 1;
+      nivel.textContent = dificultad;
+      incrementarVelocidad();
+    }
+    puntos.textContent = puntaje;
+    ladrillo.remove(campo);
+    crearLadrillo();
+  }
+}
+// Funcion para crear un enemigo
+let crearEnemigo = function () {
+  let poscicionEnemigo = Math.floor(Math.random() * 9);
+  poscicionEnemigo = poscicionEnemigo * 1;
+  let diferencia = poscicionEnemigo - posicionX;
+  if (diferencia < 0) {
+    diferencia *= -1;
+  }
+  while (poscicionEnemigo == posicionX && diferencia < 8) {
+    poscicionEnemigo = Math.floor(Math.random() * 9);
+    poscicionEnemigo = poscicionEnemigo * 1;
+    diferencia = poscicionEnemigo - posicionX;
+  }
+  let enemigo = document.createElement("div");
+  campo.appendChild(enemigo);
+  enemigo.className = "enemigo";
+  enemigo.style.width = "50px";
+  enemigo.style.height = "50px";
+  enemigo.style.gridColumnStart = poscicionEnemigo;
+  enemigo.style.gridRowStart = poscicionEnemigo;
+  enemigo.style.background = "url('static/img/tiburon3.png')";
+};
+// crearEnemigo();
+
+// Funcion para mover enemigo
+function moverEnemigo() {
+  let enemigo = document.querySelector(".enemigo");
+  if (posicionEnemigoX < posicionX) {
+    posicionEnemigoX += 1;
+  } else if (posicionEnemigoX == posicionX) {
+    comer();
+  } else {
+    posicionEnemigoX -= 1;
+  }
+  if (posicionEnemigoY < posicionY) {
+    posicionEnemigoY += 1;
+  } else if (posicionEnemigoY == posicionX) {
+    comer();
+  } else {
+    posicionEnemigoY -= 1;
+  }
+  enemigo.style.gridColumnStart = posicionEnemigoX;
+  enemigo.style.gridRowStart = posicionEnemigoY;
+}
+
+// Intervalo para mover enemigo
+// intervalo = setInterval(moverEnemigo, velocidadEnemigo);
+
+// Funcion para que el enemigo se coma al usuario
+function comer() {
+  let bola = document.querySelector(".bola");
+  let enemigo = document.querySelector(".enemigo");
+  if (posicionX == posicionEnemigoX && posicionY == posicionEnemigoY) {
+    if (campo.contains(bola)) {
+      bola.remove(campo);
+      //Llamamos a la funcion para preguntar si desea guardar los puntajes y volver a empezar
+      ventanaRegresar();
+    }
+    clearInterval(intervalo);
+  }
+}
+
+// Funcion para incrementar velocidad del enemigo
+function incrementarVelocidad() {
+  if (velocidadEnemigo > 200) {
+    velocidadEnemigo -= 100;
+  }
+  clearInterval(intervalo);
+  intervalo = setInterval(moverEnemigo, velocidadEnemigo);
+}
+
+    </script>
+</body>
+</html>

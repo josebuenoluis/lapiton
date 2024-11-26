@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jose Francisco Bueno Luis">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>laPiton</title>
+    <link rel="stylesheet" href={% block estilos%}{% endblock %}>
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sonsie+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Sonsie+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="principal">
+        <header>
+            <div class="logo">
+                <p>laPiton</p>
+                <img src="static/img/imagenLogoPiton.png" alt="Logo laPiton">
+            </div>
+            <nav>
+                <a href="#">Inicio</a>
+                <a href="#">Categorias</a>
+                <a href="#">Ranking</a>
+                <a href="#">Novedades</a>
+            </nav>
+        </header>
+        <div class="main">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <footer>
+            <nav>
+                <a href="#">Lo mas jugado</a>
+                <a href="#">Lo mas nuevo</a>
+            </nav>
+            <div class="logo">
+                <p>laPiton</p>
+                <img src="static/img/imagenLogoPiton.png" alt="Logo laPiton">
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
